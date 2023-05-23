@@ -28,10 +28,52 @@
 Après avoir installé ElasticSearch, on peut maintenant le lançer sur notre machine : 
     On lance un container ElasticSearch avec cette commande : `docker run --name elasticsearch --net elastic -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -t docker.elastic.co/elasticsearch/elasticsearch:8.7.1`. Avec cette commande on récupère en sortie le token pour pour lier Kibana à ElasticSearch et le mot de passe pour s'y connecter. Le username par défaut "elastic" est aussi crée. 
 
-    On récupère ensuite l'image docker de kibana : `docker pull docker.elastic.co/kibana/kibana:8.7.1`
+On récupère ensuite l'image docker de kibana : `docker pull docker.elastic.co/kibana/kibana:8.7.1`
+Et on lance le container : `docker run --name kibana --net elastic -p 5601:5601 docker.elastic.co/kibana/kibana:8.7.1`
+Sur https://localhost:5601 on renseigne le token pour kibana et on peut ensuite se connecter avec le username : "elastic" et le mot de passe généré par l'execution du container ElasticSearch. 
 
-    Et on lance le container : `docker run --name kibana --net elastic -p 5601:5601 docker.elastic.co/kibana/kibana:8.7.1`
+Nous pouvons ensuite visualiser les données indexée dans ElasticSearch !
 
-    Sur https://localhost:5601 on renseigne le token pour kibana et on peut ensuite se connecter avec le username : "elastic" et le mot de passe généré par l'execution du container ElasticSearch. 
 
-    Nous pouvons ensuite visualiser les données indexée dans ElasticSearch !
+On se rend ensuite dans le dev_tools pour y créer un nouvel index avec : ``PUT /new-test-index``
+
+On peut modifier son mapping avec la commande : 
+``
+PUT /new-test-index/_mapping
+{
+  "properties": {
+    "field2": {
+      "type": "boolean"
+    }
+  }
+}
+``
+
+On peut indexer un document de cette manière : 
+``
+POST /new-test-index/_doc/
+{
+  "field1": "je suis un autre texte",
+  "field2": false
+}
+``
+
+Si on veut indexer beaucoup de document en une seule fois, il est préférebale de faire un bulk : 
+``PUT _bulk
+{"index":{"_index":"new-test-index"}}
+{"field1":"bulk1","field2":true}
+{"index":{"_index":"new-test-index"}}
+{"field1":"bulk2","field2":false}
+{"index":{"_index":"new-test-index"}}
+{"field1":"bulk3","field2":true}
+{"index":{"_index":"new-test-index"}}
+{"field1":"bulk4","field2":false}
+{"index":{"_index":"new-test-index"}}
+{"field1":"bulk5","field2":true}
+{"index":{"_index":"new-test-index"}}
+{"field1":"bulk6","field2":false}``
+
+On visualise ensuite notre mapping avec cette requête : ``GET /new-test-index/_mapping``
+
+On visualise aussi nos document indexés avec cette requête : ``GET /new-test-index/_search``
+
