@@ -15,8 +15,13 @@ public class VideoGameController {
         this.gameRepository = gameRepository;
     }
 
-    @GetMapping("api/v1/getGame/{gameName}")
+    @GetMapping("api/v1/getGameByName/{gameName}")
     public VideoGameDTO getGameByName(@PathVariable String gameName) {
         return this.gameRepository.getVideoGameByName(gameName);
+    }
+
+    @GetMapping("api/v1/getGameById/{id}")
+    public VideoGameDTO getGameById(@PathVariable Long id) {
+        return this.gameRepository.getVideoGameByName("");
     }
 }
