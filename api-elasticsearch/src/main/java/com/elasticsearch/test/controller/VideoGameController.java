@@ -41,4 +41,9 @@ public class VideoGameController {
     public VideoGameDTO updateVideoGame(@PathVariable String id, @RequestBody VideoGameDTO newGameInfo) throws IOException {
         return this.gameRepository.updateVideoGame(id, newGameInfo);
     }
+
+    @DeleteMapping("api/v1/deleteGame/{id}")
+    public Boolean deleteVideoGame(@PathVariable String id) throws IOException {
+        return this.gameRepository.deleteVideoGame(id);
+    }
 }

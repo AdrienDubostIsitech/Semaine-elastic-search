@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
+import org.thymeleaf.util.StringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,6 +26,8 @@ public class VideoGameRepository {
 
 
     public VideoGameDTO getVideoGameById(String id) {
+        if (StringUtils.isEmpty(id)) return null;
+
         VideoGameDTO searchedGame = new VideoGameDTO();
         GetRequest getRequest = new GetRequest.Builder()
                 .index(this.indexName)
@@ -52,6 +55,8 @@ public class VideoGameRepository {
         return searchedGame;
     }
     public VideoGameDTO getVideoGameByName(String videoGameName) {
+        if (StringUtils.isEmpty(videoGameName)) return null;
+
         SearchResponse<VideoGameDTO> videoGameResponse = null;
         try {
             videoGameResponse = this.ELASTICSEARCH_CLIENT.search(s -> s
@@ -85,6 +90,8 @@ public class VideoGameRepository {
 
     }
     public List<VideoGameDTO> getVideoGamesByConsole(String console) {
+        if (StringUtils.isEmpty(console)) return null;
+
         SearchResponse<VideoGameDTO> videoGameResponse = null;
         try {
             videoGameResponse = this.ELASTICSEARCH_CLIENT.search(s -> s
@@ -154,6 +161,9 @@ public class VideoGameRepository {
         return newVideoGame;
     }
     public VideoGameDTO updateVideoGame(String id, VideoGameDTO updatedVideoGame) throws IOException {
+        if (StringUtils.isEmpty(id)) return null;
+        if (updatedVideoGame == null) return null;
+
         VideoGameDTO videoGameToUpdate = this.getVideoGameById(id);
 
         if (videoGameToUpdate == null) {
@@ -191,5 +201,40 @@ public class VideoGameRepository {
        }
 
        return videoGameToUpdate;
+    }
+    public Boolean deleteVideoGame(String id) throws IOException {
+        Boolean deleted = false;
+        if (StringUtils.isEmpty(id)) return deleted;
+
+        DeleteRequest deleteRequest = new DeleteRequest.Builder()
+                .index(this.indexName)
+                .id(id)
+                .build();
+
+        DeleteResponse response = this.ELASTICSEARCH_CLIENT.delete(deleteRequest);
+
+        if (response == null) {
+            log.info("la réponse est null");
+            return deleted;
+        }
+
+        if (response.result() == null) {
+            log.info("la réponse est vide");
+            return deleted;
+        }
+
+        Result result = response.result();
+
+        if (result == Result.Deleted) {
+            log.info("document supprimé : " + id);
+            deleted = true;
+        }
+        else {
+            log.info("Erreur pendant la suppression du document : " + id);
+            deleted = false;
+        }
+
+        return deleted;
+
     }
 }

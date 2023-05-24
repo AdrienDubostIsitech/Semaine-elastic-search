@@ -30,5 +30,10 @@ Content-Type: application/json
 {
   "GameName": "The Legend of Zelda : Tears of the Kingdom Review",
   "Console": "SWITCH",
-  "Review": "Best game ever"
+  "Review": "Best game ever dvbziuvbsjcbs"
 }
+
+
+### DELETE video gale by ID
+DELETE http://localhost:8080/api/v1/deleteGame/{{idToDelete}}
+Content-Type: application/json
