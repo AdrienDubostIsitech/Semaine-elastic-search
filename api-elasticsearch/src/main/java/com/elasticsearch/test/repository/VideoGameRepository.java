@@ -46,6 +46,7 @@ public class VideoGameRepository {
             }
 
             searchedGame = response.source();
+            searchedGame.setId(id);
 
         }
         catch (IOException exception) {
@@ -86,6 +87,11 @@ public class VideoGameRepository {
         }
 
         returnedGame = videoGameResponse.hits().hits().get(0).source();
+        String returnedId = videoGameResponse.hits().hits().get(0).id();
+
+        if (returnedGame == null) return null;
+
+        returnedGame.setId(returnedId);
         return returnedGame;
 
     }
@@ -122,8 +128,14 @@ public class VideoGameRepository {
 
         List<Hit<VideoGameDTO>> hits = videoGameResponse.hits().hits();
         for (Hit<VideoGameDTO> hit : hits) {
+            if (hit == null) continue;
+
             VideoGameDTO tmpGame = hit.source();
+            String tmpId = hit.id();
+
             if (tmpGame == null) continue;
+
+            tmpGame.setId(tmpId);
             returnedGame.add(tmpGame);
         }
         return returnedGame;

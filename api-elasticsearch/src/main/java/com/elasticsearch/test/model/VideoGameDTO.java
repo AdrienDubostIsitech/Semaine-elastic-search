@@ -51,6 +51,9 @@ public class VideoGameDTO {
     @JsonProperty("Review")
     private String review;
 
+    @JsonIgnore
+    private String id;
+
     public VideoGameDTO merge(VideoGameDTO vgToMerge) {
         if (!StringUtils.isEmpty(vgToMerge.getGameName())
                 || !StringUtils.equals(this.getGameName(), vgToMerge.getGameName())) {
