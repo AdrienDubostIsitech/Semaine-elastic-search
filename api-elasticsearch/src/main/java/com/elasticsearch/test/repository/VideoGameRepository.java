@@ -1,7 +1,8 @@
 package com.elasticsearch.test.repository;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.elasticsearch.core.SearchResponse;
+import co.elastic.clients.elasticsearch._types.Result;
+import co.elastic.clients.elasticsearch.core.*;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import com.elasticsearch.test.model.VideoGameDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +12,6 @@ import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -19,11 +19,38 @@ import java.util.List;
 public class VideoGameRepository {
 
     @Autowired
-    private ElasticsearchClient ELASTICSEARCH_CLIENT = null;
+    private ElasticsearchClient ELASTICSEARCH_CLIENT;
 
     private final String indexName = "video_games";
 
 
+    public VideoGameDTO getVideoGameById(String id) {
+        VideoGameDTO searchedGame = new VideoGameDTO();
+        GetRequest getRequest = new GetRequest.Builder()
+                .index(this.indexName)
+                .id(id)
+                .build();
+        try {
+            GetResponse<VideoGameDTO> response = this.ELASTICSEARCH_CLIENT.get(getRequest, VideoGameDTO.class);
+
+            if (response == null) {
+                log.info("la réponse est null");
+                return null;
+            }
+            if (response.source() == null) {
+                log.info("La réponse est vide");
+                return null;
+            }
+
+            searchedGame = response.source();
+
+        }
+        catch (IOException exception) {
+            log.error("Exception while searching by Id");
+        }
+
+        return searchedGame;
+    }
     public VideoGameDTO getVideoGameByName(String videoGameName) {
         SearchResponse<VideoGameDTO> videoGameResponse = null;
         try {
@@ -42,7 +69,7 @@ public class VideoGameRepository {
             log.error("Exception while searching profile", e);
         }
 
-        VideoGameDTO returnedGame =  new VideoGameDTO();
+        VideoGameDTO returnedGame = new VideoGameDTO();
         if (videoGameResponse == null) {
             log.info("la réponse est null");
             return new VideoGameDTO();
@@ -57,7 +84,6 @@ public class VideoGameRepository {
         return returnedGame;
 
     }
-
     public List<VideoGameDTO> getVideoGamesByConsole(String console) {
         SearchResponse<VideoGameDTO> videoGameResponse = null;
         try {
@@ -76,7 +102,7 @@ public class VideoGameRepository {
             log.error("Exception while searching profile", e);
         }
 
-        List<VideoGameDTO> returnedGame =  new ArrayList<>();
+        List<VideoGameDTO> returnedGame = new ArrayList<>();
         if (videoGameResponse == null) {
             log.info("la réponse est null");
             return new ArrayList<>();
@@ -94,5 +120,76 @@ public class VideoGameRepository {
             returnedGame.add(tmpGame);
         }
         return returnedGame;
+    }
+    public VideoGameDTO createVideoGame(VideoGameDTO newVideoGame) throws IOException {
+        if (newVideoGame == null) return null;
+
+        boolean isValid = newVideoGame.isValid();
+
+        if (isValid == false) return null;
+
+        IndexRequest<VideoGameDTO> indexRequest = new IndexRequest.Builder<VideoGameDTO>()
+                .index(this.indexName)
+                .document(newVideoGame)
+                .build();
+        IndexResponse response = this.ELASTICSEARCH_CLIENT.index(indexRequest);
+
+        if (response == null) {
+            log.info("La réponse est null");
+            return null;
+        }
+        if (response.result() == null) {
+            log.info("La réponse est vide");
+            return null;
+        }
+
+        Result result = response.result();
+
+        if (result == Result.Created) {
+            log.info("Indexation du document : " + newVideoGame.toString());
+        }
+        else {
+            log.info("Erreur lors de l'indéxation du document : " + newVideoGame.toString());
+        }
+        return newVideoGame;
+    }
+    public VideoGameDTO updateVideoGame(String id, VideoGameDTO updatedVideoGame) throws IOException {
+        VideoGameDTO videoGameToUpdate = this.getVideoGameById(id);
+
+        if (videoGameToUpdate == null) {
+            log.info("Il y a eu une erreur lors de la recherche de votre jeu, il est possible qu'il n'existe pas ou que l'Id donné soit erroné");
+            return null;
+        }
+
+        videoGameToUpdate.merge(updatedVideoGame);
+
+
+        UpdateRequest updateRequest = new UpdateRequest.Builder<>()
+                .id(id)
+                .index(this.indexName)
+                .doc(videoGameToUpdate)
+                .build();
+
+       UpdateResponse response = this.ELASTICSEARCH_CLIENT.update(updateRequest, VideoGameDTO.class);
+
+       if (response == null) {
+          log.info("La réponse est null");
+          return null;
+       }
+
+       if (response.result() == null) {
+           log.info("La réponse est vide");
+           return null;
+       }
+       Result result = response.result();
+
+       if (result == Result.Updated) {
+           log.info("update du document : " + id + " resulat du document : " + videoGameToUpdate);
+       }
+       else {
+           log.info("Error while updated document with id : " + id);
+       }
+
+       return videoGameToUpdate;
     }
 }

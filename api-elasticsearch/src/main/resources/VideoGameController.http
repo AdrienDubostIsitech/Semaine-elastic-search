@@ -1,0 +1,34 @@
+
+### GET video games by Console
+GET http://localhost:8080/api/v1/getGameByConsole/{{consoleName}}
+Content-Type: application/json
+
+### GET video games by ID
+GET http://localhost:8080/api/v1/getGameById/{{id}}
+Content-Type: application/json
+
+### GET video games by name
+GET http://localhost:8080/api/v1/getGameByName/{{gameName}}
+Content-Type: application/json
+
+### POST create new Video game
+POST http://localhost:8080/api/v1/createGame
+Content-Type: application/json
+
+{
+  "GameName": "The Legend of Zelda Tears of the Kingdom",
+  "Console": "SWITCH",
+  "Score": 9,
+  "Review" : "The best Zelda Ever"
+}
+
+
+### PUT uodate video game by ID
+PUT http://localhost:8080/api/v1/updateGame/{{idToUpdate}}
+Content-Type: application/json
+
+{
+  "GameName": "The Legend of Zelda : Tears of the Kingdom Review",
+  "Console": "SWITCH",
+  "Review": "Best game ever"
+}
