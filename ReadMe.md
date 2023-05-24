@@ -93,3 +93,8 @@ On visualise aussi nos document indexés avec cette requête : ``GET /new-test-i
 
   La Normalisation est le comportement qui va être appliqué au Token. Il peuvent être divers et variés allant de la suppression de la ponctuation ou des accents jusqu'a mettre les tokens en majuscule ou en minuscule. 
 
+## Analyzer
+  Les données indexés sont analysés par un analyser. Celui ci va Tokeniser les données indexés. L'Analyser standard va tokeniser les données suivant plusieurs token en fonction des espce entre les mots. 
+  Par exemple : "Luffy sera le prochain roi des pirates" devient => ["Luffy" | "sera" | "le" | "prochain" | "roi" | "des" | "pirates"] (la phrase est donc tokeniser en 7 tokens).
+  L'analyser Keyword, aurait permis de garder cette phrase en un seul token contenant la phrase entière. 
+

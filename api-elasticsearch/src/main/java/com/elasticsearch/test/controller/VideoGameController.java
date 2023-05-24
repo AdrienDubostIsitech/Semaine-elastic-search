@@ -33,17 +33,17 @@ public class VideoGameController {
     }
 
     @PostMapping("api/v1/createGame")
-    public VideoGameDTO AddNewGame(@Valid @RequestBody VideoGameDTO newGame) throws IOException {
+    public VideoGameDTO AddNewGame(@Valid @RequestBody VideoGameDTO newGame) {
         return this.gameRepository.createVideoGame(newGame);
     }
 
     @PutMapping("api/v1/updateGame/{id}")
-    public VideoGameDTO updateVideoGame(@PathVariable String id, @RequestBody VideoGameDTO newGameInfo) throws IOException {
+    public VideoGameDTO updateVideoGame(@PathVariable String id, @RequestBody VideoGameDTO newGameInfo) {
         return this.gameRepository.updateVideoGame(id, newGameInfo);
     }
 
     @DeleteMapping("api/v1/deleteGame/{id}")
-    public Boolean deleteVideoGame(@PathVariable String id) throws IOException {
+    public Boolean deleteVideoGame(@PathVariable String id) {
         return this.gameRepository.deleteVideoGame(id);
     }
 }

@@ -140,7 +140,7 @@ public class VideoGameRepository {
         }
         return returnedGame;
     }
-    public VideoGameDTO createVideoGame(VideoGameDTO newVideoGame) throws IOException {
+    public VideoGameDTO createVideoGame(VideoGameDTO newVideoGame) {
         if (newVideoGame == null) return null;
 
         boolean isValid = newVideoGame.isValid();
@@ -151,7 +151,14 @@ public class VideoGameRepository {
                 .index(this.indexName)
                 .document(newVideoGame)
                 .build();
-        IndexResponse response = this.ELASTICSEARCH_CLIENT.index(indexRequest);
+
+        IndexResponse response = null;
+        try {
+            response = this.ELASTICSEARCH_CLIENT.index(indexRequest);
+        }
+        catch (IOException exception) {
+            log.info("Error while index new videogame : " + newVideoGame);
+        }
 
         if (response == null) {
             log.info("La réponse est null");
@@ -172,7 +179,7 @@ public class VideoGameRepository {
         }
         return newVideoGame;
     }
-    public VideoGameDTO updateVideoGame(String id, VideoGameDTO updatedVideoGame) throws IOException {
+    public VideoGameDTO updateVideoGame(String id, VideoGameDTO updatedVideoGame) {
         if (StringUtils.isEmpty(id)) return null;
         if (updatedVideoGame == null) return null;
 
@@ -192,7 +199,13 @@ public class VideoGameRepository {
                 .doc(videoGameToUpdate)
                 .build();
 
-       UpdateResponse response = this.ELASTICSEARCH_CLIENT.update(updateRequest, VideoGameDTO.class);
+        UpdateResponse response = null;
+        try {
+            response = this.ELASTICSEARCH_CLIENT.update(updateRequest, VideoGameDTO.class);
+        }
+        catch (IOException exception) {
+            log.info("Eroor while updated video game with Id : " + id);
+        }
 
        if (response == null) {
           log.info("La réponse est null");
@@ -214,7 +227,7 @@ public class VideoGameRepository {
 
        return videoGameToUpdate;
     }
-    public Boolean deleteVideoGame(String id) throws IOException {
+    public Boolean deleteVideoGame(String id) {
         Boolean deleted = false;
         if (StringUtils.isEmpty(id)) return deleted;
 
@@ -223,7 +236,13 @@ public class VideoGameRepository {
                 .id(id)
                 .build();
 
-        DeleteResponse response = this.ELASTICSEARCH_CLIENT.delete(deleteRequest);
+        DeleteResponse response = null;
+        try {
+            response = this.ELASTICSEARCH_CLIENT.delete(deleteRequest);
+        }
+        catch (IOException exception) {
+            log.info("Error while deleting video game with id : " + id);
+        }
 
         if (response == null) {
             log.info("la réponse est null");
