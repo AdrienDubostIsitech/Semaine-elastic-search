@@ -77,3 +77,15 @@ On visualise ensuite notre mapping avec cette requête : ``GET /new-test-index/_
 
 On visualise aussi nos document indexés avec cette requête : ``GET /new-test-index/_search``
 
+
+### Mapping
+  ElasticSearch possède deux manières de mapper ses indexs : 
+    - il peut les mapper dynamiquement, en analysant les documents indexés et en déduisant le type des champs des documents indexés. 
+      Il crée dynamiquement le mapping de l'indexe grâce à cette méthode. Cette méthode ne requiert aucune configuration
+    - On peut aussi créer un mapping prédéfini pour l'index. En analysant les documents indexés ElasticSearch va repérer lequel correspondent au nom et au type configurer dans le mapping. Tout les documents pourront donc être visualisés suivant ce schéma. Ce type de mapping requiert une configuration. 
+
+  Voilà comment on se présente un mapping : (**INSERER PHOTO**)
+
+  Il est possible de modifier le mapping d'un index sans forcément le recréer complètement. Cependant suivant les modifications du mapping et les données indexés, il est possible que certains données soient réindexés dans un index de transition. 
+  
+
