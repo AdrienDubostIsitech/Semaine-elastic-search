@@ -55,17 +55,18 @@ public class VideoGameRepository {
 
         return searchedGame;
     }
-    public VideoGameDTO getVideoGameByName(String videoGameName) {
+    public List<VideoGameDTO> getVideoGameByName(String videoGameName) {
         if (StringUtils.isEmpty(videoGameName)) return null;
 
         SearchResponse<VideoGameDTO> videoGameResponse = null;
         try {
             videoGameResponse = this.ELASTICSEARCH_CLIENT.search(s -> s
                             .index(this.indexName)
-                            .size(10)
+                            .size(25)
                             .query(q -> q
                                     .match(t -> t
                                             .field("GameName")
+                                            .fuzziness("auto")
                                             .query(videoGameName))
                             ),
                     VideoGameDTO.class
@@ -75,23 +76,33 @@ public class VideoGameRepository {
             log.error("Exception while searching profile", e);
         }
 
-        VideoGameDTO returnedGame = new VideoGameDTO();
+        List<VideoGameDTO> returnedGame = new ArrayList<>();
+
         if (videoGameResponse == null) {
             log.info("la réponse est null");
-            return new VideoGameDTO();
+            return new ArrayList<>();
         }
 
         if (CollectionUtils.isEmpty(videoGameResponse.hits().hits())) {
             log.info("la réponse est vide");
-            return new VideoGameDTO();
+            return new ArrayList<>();
         }
 
-        returnedGame = videoGameResponse.hits().hits().get(0).source();
-        String returnedId = videoGameResponse.hits().hits().get(0).id();
+        List<Hit<VideoGameDTO>> hits = videoGameResponse.hits().hits();
+        for (Hit<VideoGameDTO> hit : hits) {
+            if (hit == null) continue;
 
-        if (returnedGame == null) return null;
+            VideoGameDTO tmpGame = hit.source();
+            String tmpId = hit.id();
 
-        returnedGame.setId(returnedId);
+            if (tmpGame == null) continue;
+
+            tmpGame.setId(tmpId);
+            returnedGame.add(tmpGame);
+        }
+
+        if (CollectionUtils.isEmpty(returnedGame)) return null;
+
         return returnedGame;
 
     }
