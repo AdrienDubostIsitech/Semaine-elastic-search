@@ -87,5 +87,9 @@ On visualise aussi nos document indexés avec cette requête : ``GET /new-test-i
   Voilà comment on se présente un mapping : (**INSERER PHOTO**)
 
   Il est possible de modifier le mapping d'un index sans forcément le recréer complètement. Cependant suivant les modifications du mapping et les données indexés, il est possible que certains données soient réindexés dans un index de transition. 
-  
+
+## Tokenisation et Normalisation 
+  La Tokenisation est un processus qui va découpé une chaine de caractères en plusieurs caracter ou petite chaines de caractères appelés token. Suivant l'analyzer utilisé, ces tokens peuvent être des mots, des caractères spéciaux ou des bouts de mots.
+
+  La Normalisation est le comportement qui va être appliqué au Token. Il peuvent être divers et variés allant de la suppression de la ponctuation ou des accents jusqu'a mettre les tokens en majuscule ou en minuscule. 
 
