@@ -112,3 +112,23 @@ Explication :
   - Les réplicas sont des copies de shards. Ils permettent tout comme les shard de distribuer la charge entre les noeuds afin d'améliorer la performance en cas de reqûete ou d'indexation. C'est pour cela que sur le schéma on peut observer que les réplicas des shards du premier node, se trouvent sur les autres nodes. Mais ils permettent aussi d'assurer une disponibilité des données en cas de panne.
   - Les alias peuvent être considérés comme des "index" d'index. Ils permettent de reassembler plusieurs index sous un même alias afin d'afin d'améliorer la recherche d'informations. 
 
+
+## Scalabité
+
+ElasticSearch est un service très scalable. Il s'adapte très facilement si on augmente le nombre de données et de serveurs. Comme expliqué plus haut, les shards et les réplicas permettent d'optimiser les performance et d'assurer un service continu en cas de panne. Optimiser les shards et le réplicas permet aussi d'améliorer grandement la scalabilité (déjà importante) d'ElasticSearch. 
+Pour garder une scalabilité important, il faut idéalement avoir plus de shards que de noeuds. Les shards naviguent facilement entre les noeuds pour ganratir une haute disponibilité de la données et améliorer les performance de recherche. Mais attention trop de shards par rapport au noeuds va entrainer une consommation excessive des ressource et donc baisser les performances du service. 
+On peut aussi augmenter la scalabilité avec des réplicas. Cela permet aussi d'augmenter la disponibilité et la resistance aux pannes. Mais attention un trop grand nombre de réplicas signifie qu'une grosse partie de l'espace disque et mémoire est occupée ! Cela ralentit fortement l'indexation de nouveau documents. Tout comme les shards il ne faut pas abuser des réplicas. 
+
+## KIBANA
+
+### Qu'est ce que Kibana ?
+Kibana est un service de data visualisation étroitement lié avec ElasticSearch. Il permet à son utilisateur de visualiser la data présente dans ElasticSearch à travers des graphiques et divers outils d'analyse. ELle permet aussi de créer des Dashboards afin de personnaliser la visualisation de la données. 
+
+### Qu'est ce qu'un dashboard ? 
+Un Dashboard est un outil visuel personnalisable permettant de visualiser facilement et de manière concise de la données. 
+
+### Visualisation et Dahsboard
+
+
+
+
