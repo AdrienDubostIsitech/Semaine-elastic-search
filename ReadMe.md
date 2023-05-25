@@ -129,6 +129,13 @@ Un Dashboard est un outil visuel personnalisable permettant de visualiser facile
 
 ### Visualisation et Dahsboard
 
+![](assets/discover.png)
+La page Discover permet d'explorer les données contenues dans les index.
 
+![](assets/visualisation.png)
+Cette page permet de créer une visualisation de données. Cela permet de créer un graphique en personnalisant le type de graphique voulut (courbes, barres, nuages de points) en fonction des champs de données de l'index choisit. 
+
+![](assets/dashboard.png)
+Comme expliqué plus haut, la page de dashboard est un espace personnalisable permettant de visualiser et modifier rapidement les différents visualisation crées. 
 
 
