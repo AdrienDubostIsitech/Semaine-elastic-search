@@ -104,11 +104,11 @@ On visualise aussi nos document indexés avec cette requête : ``GET /new-test-i
 ![](assets/schema-ES.png)
 
 Explication : 
-  - En haut du schéma en rouge se trouve le cluster, un ensemble de plusieurs nodes
+  - En haut du schéma, avec les bordures rouges, se trouve le cluster, un ensemble de plusieurs nodes
   - les nodes (noeuds) sont des instances d'Elasticsearch qui forme le cluster. 
-  - Dans les nodes, on peut trouver des index qui sont l'équivalent de tables dans les bases de données SQL. C'est dans les index que l'on va indexer les documents.
+  - Dans les nodes, on peut trouver des index qui sont l'équivalent des tables dans les bases de données SQL. C'est dans les index que l'on va indexer les documents.
   - Les documents sont les données, qui sont indexées suivant le mapping de l'index.
   - Les shards sont des partitions d'un index. Ils se partagent la données de l'index. Si un index possède 3 shards. Chacun des shards possèdera 1/3 de la donnée indexée dans l'index. Ils permettent de répartir la données d'un index sur plusieurs noeud pour paralléliser les requêtes et les indexations afin de gagner en performance. 
-  - Les réplicas sont des copies de shards. Ils permettent tout comme les shard de distribuer la charge afin d'améliorer la performance en cas de reqûete ou d'indexation. Mais ils permettent aussi d'assurer une disponibilité des données en cas de panne.
+  - Les réplicas sont des copies de shards. Ils permettent tout comme les shard de distribuer la charge entre les noeuds afin d'améliorer la performance en cas de reqûete ou d'indexation. C'est pour cela que sur le schéma on peut observer que les réplicas des shards du premier node, se trouvent sur les autres nodes. Mais ils permettent aussi d'assurer une disponibilité des données en cas de panne.
   - Les alias peuvent être considérés comme des "index" d'index. Ils permettent de reassembler plusieurs index sous un même alias afin d'afin d'améliorer la recherche d'informations. 
 
