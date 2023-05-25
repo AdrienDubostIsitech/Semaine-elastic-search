@@ -98,3 +98,6 @@ On visualise aussi nos document indexés avec cette requête : ``GET /new-test-i
   Par exemple : "Luffy sera le prochain roi des pirates" devient => ["Luffy" | "sera" | "le" | "prochain" | "roi" | "des" | "pirates"] (la phrase est donc tokeniser en 7 tokens).
   L'analyser Keyword, aurait permis de garder cette phrase en un seul token contenant la phrase entière. 
 
+
+## Schéma d'ElasticSearch
+
