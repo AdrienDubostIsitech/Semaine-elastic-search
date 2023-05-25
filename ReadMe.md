@@ -101,3 +101,5 @@ On visualise aussi nos document indexés avec cette requête : ``GET /new-test-i
 
 ## Schéma d'ElasticSearch
 
+![](assest/schema-ES.png)
+
