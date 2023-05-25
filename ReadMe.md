@@ -142,3 +142,15 @@ Cette page permet de créer une visualisation de données. Cela permet de créer
 Comme expliqué plus haut, la page de dashboard est un espace personnalisable permettant de visualiser et modifier rapidement les différents visualisation crées. 
 
 
+## Source
+
+Voici le lien vers les données que j'ai utilisée pour ce TP : https://www.kaggle.com/datasets/mohamedhanyyy/video-games
+
+## Indications
+
+Dans le projet api-elastic-search, dans le fichier MainConfig.js il faudra remplace le mot de pase et le fingerprint par le mot de passe et le fingerprint sur votre machine. 
+
+Le projet video-game-search-app est une barre de recherche qui affiche tout les résulats possible en fonction de la chaine de caractère renseigné dans la barre de recherche. Cela ne fonctionne pas exactement comme je le voulait. A l'origine je voulais qu'en tapant sur le barre de recherche on est en dessous un aperçu des jeux-video avec un nom ressemblant et une fois qu'on aurait cliqué sur le bouton de recherche on aurait eu tout les résultats disponible. On aurait aussi pu rechercher des jeux par console et les trier par review. 
+Il faut bien evidemment que l'API soit lançée pour utiliser l'application web.
+
+
